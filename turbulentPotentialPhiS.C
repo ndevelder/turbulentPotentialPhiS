@@ -1478,7 +1478,7 @@ void turbulentPotentialPhiS::correct()
     }
 	
 
-	const volVectorField cdpS("cdpS", 2.0*fvc::curl(fvc::div(tpphi_*k_*dev(symm(fvc::grad(U_))))));
+	const volVectorField cdpS("cdpS", 2.0*fvc::curl(fvc::div(tpphi_*k_*dev(skew(fvc::grad(U_))))));
 	const volTensorField gradPhis("gradphis", fvc::grad(phis_));
 
     //*************************************//
@@ -1498,7 +1498,7 @@ void turbulentPotentialPhiS::correct()
     //*************************************//   
     // Psi Specific Constants
     //*************************************//
-	const volVectorField psiProdPhiS("psiProdPhiS", max(tpphi_*vorticity_, -1.0*phis_/(k_ + k0_))); 
+	const volVectorField psiProdPhiS("psiProdPhiS",  -1.0*phis_/(k_ + k0_)); 
 	
 	
     //*************************************//   
@@ -1516,7 +1516,7 @@ void turbulentPotentialPhiS::correct()
 
 	  // Production
 	    (1.0-cP2_)*alpha_*(tpphi_*vorticity_)
-	  -	(1.0-cP2_)*(1.0 - alpha_)*psiProdPhiS
+	  +	(1.0-cP2_)*(1.0 - alpha_)*psiProdPhiS
       - fvm::Sp(tpProd_,tppsi_)
 	  + epsHat_*tppsi_
 	  
