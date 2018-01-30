@@ -1,12 +1,12 @@
 diff -Naur turbulentPotential/turbulentPotential.C turbulentPotentialFixU/turbulentPotential.C
---- turbulentPotential.C	
-+++ turbulentPotential.C	
+--- turbulentPotentialPhiS.C	
++++ turbulentPotentialPhiS.C	
 @@ -963,14 +963,14 @@
  }
  
  // Term that is directly added to the momentum equation
--tmp<fvVectorMatrix> turbulentPotential::divDevReff(volVectorField& U) const
-+tmp<fvVectorMatrix> turbulentPotential::divDevReff() const
+-tmp<fvVectorMatrix> turbulentPotentialPhiS::divDevReff(volVectorField& U) const
++tmp<fvVectorMatrix> turbulentPotentialPhiS::divDevReff() const
  {
      return
      (
@@ -20,8 +20,8 @@ diff -Naur turbulentPotential/turbulentPotential.C turbulentPotentialFixU/turbul
  }
  
 diff -Naur turbulentPotential/turbulentPotential.H turbulentPotentialFixU/turbulentPotential.H
---- turbulentPotential.H
-+++ turbulentPotential.H
+--- turbulentPotentialPhiS.H
++++ turbulentPotentialPhiS.H
 @@ -401,7 +401,7 @@
          virtual tmp<volSymmTensorField> devReff() const;
  
