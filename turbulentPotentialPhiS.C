@@ -1486,7 +1486,7 @@ void turbulentPotentialPhiS::correct()
     //*************************************//   
     tmp<fvVectorMatrix> phisEqn   
     (	     
-      - fvm::laplacian(phis_)
+        - fvm::laplacian(phis_)
      ==	   
 	    cdpS
     );
