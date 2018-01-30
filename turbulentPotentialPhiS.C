@@ -1498,7 +1498,7 @@ void turbulentPotentialPhiS::correct()
     //*************************************//   
     // Psi Specific Constants
     //*************************************//
-	const volScalarField psiProd("psiProd", (tppsi_ & vorticity_)); 
+	const volVectorField psiProdPhiS("psiProdPhiS", max(tpphi_*vorticity_, -1.0*phis_/(k_ + k0_))); 
 	
 	
     //*************************************//   
@@ -1516,7 +1516,7 @@ void turbulentPotentialPhiS::correct()
 
 	  // Production
 	    (1.0-cP2_)*alpha_*(tpphi_*vorticity_)
-	  -	(1.0-cP2_)*(1.0 - alpha_)*(phis_/(k_ + k0_))
+	  -	(1.0-cP2_)*(1.0 - alpha_)*psiProdPhiS
       - fvm::Sp(tpProd_,tppsi_)
 	  + epsHat_*tppsi_
 	  
@@ -1565,12 +1565,12 @@ void turbulentPotentialPhiS::correct()
 	volScalarField uTauSquared((nu() + nut_)*vorticity_.component(2));
 	volVectorField psProdTerm(-1*(1.0-cP2_)*(1.0 - alpha_)*(phis_/(k_ + k0_)) + (1.0-cP2_)*alpha_*(tpphi_*vorticity_));
 	volVectorField phiVort(tpphi_*k_*vorticity_);
-	volScalarField magPhiS(tpphi_*k_*2.0*mag(symm(fvc::grad(U_))));
+	volScalarField magPhiS(tpphi_*k_*2.0*mag(dev(symm(fvc::grad(U_)))));
 	
 	Info<< "Max cEp1: " << max(cEp1eqn) << " Min cEp1: " << min(cEp1eqn) << endl; 
     Info<< "Max nut: " << gMax(nut_) << " Max K: " << gMax(k_) << " Max Epsilon: " << gMax(epsilon_) <<endl;
     Info<< "Max Phi: " << gMax(phiActual) << " Max Psi: " << gMax(psiActual) << " Max G: " << gMax(G) << " Max Gnut: " << gMax(Gnut) <<endl;
-    Info<< "Max phis: " << gMax(phis_) << "Max uTauSquared: " << gMax(uTauSquared) << " Max vorticity: " << gMax(vorticity_) << endl;
+    Info<< "Max phis: " << gMax(phis_) << " Max uTauSquared: " << gMax(uTauSquared) << " Max vorticity: " << gMax(vorticity_) << endl;
 	Info<< "Max Psi Prod: " << gMax(psProdTerm) << "  Max phi*vort: " << gMax(phiVort) << endl;
 	Info<< "Max phi*Sij: " << gMax(magPhiS) << endl;
 	}
